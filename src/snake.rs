@@ -5,7 +5,7 @@ use crate::random;
 
 pub type Pos = (usize, usize);
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy)]
 pub enum Direction {
     Up,
     Right,
@@ -19,6 +19,7 @@ pub struct SnakeGame {
     pub height: usize,
     pub snake: VecDeque<Pos>,
     pub direction: Direction,
+    next_direction: Direction,
     pub food: Pos,
     pub finished: bool,
 }
@@ -30,6 +31,7 @@ impl SnakeGame {
             height,
             snake: [((width - 2).max(0), height / 2)].into_iter().collect(),
             direction: Direction::Left,
+            next_direction: Direction::Left,
             food: (2.min(width - 1), height / 2),
             finished: false,
         }
@@ -47,7 +49,7 @@ impl SnakeGame {
             | (Direction::Left, Direction::Left) => (),
 
             (_, direction) => {
-                self.direction = direction;
+                self.next_direction = direction;
             }
         }
     }
@@ -56,6 +58,8 @@ impl SnakeGame {
         if self.finished || self.snake.is_empty() {
             return;
         }
+
+        self.direction = self.next_direction;
 
         let head = self.snake.get(0);
         let new_head = head.map(|&(x, y)| match &self.direction {
