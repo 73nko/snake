@@ -3,14 +3,12 @@ name = "snake"
 version = "0.1.0"
 edition = "2021"
 
-[lib]
-crate-type = ["cdylib", "rlib"]
-
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+yew = "0.19"
+gloo = "0.8.0"
 wasm-bindgen = "0.2.80"
-js-sys = "0.3.58"
 
 [dependencies.web-sys]
 version = "0.3.58"
@@ -20,6 +18,7 @@ features = [
     "Document",
     "Element",
     "HtmlElement",
+    "HtmlInputElement",
     "HtmlDivElement",
     "KeyboardEvent",
     "Window",

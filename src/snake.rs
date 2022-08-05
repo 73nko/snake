@@ -1,3 +1,4 @@
+use gloo::timers::callback::Interval;
 use random::random_range;
 use std::collections::VecDeque;
 
@@ -13,7 +14,7 @@ pub enum Direction {
     Left,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 pub struct SnakeGame {
     pub width: usize,
     pub height: usize,
@@ -22,10 +23,11 @@ pub struct SnakeGame {
     next_direction: Direction,
     pub food: Pos,
     pub finished: bool,
+    _timer: Interval,
 }
 
 impl SnakeGame {
-    pub fn new(width: usize, height: usize) -> SnakeGame {
+    pub fn new(width: usize, height: usize, timer: Interval) -> SnakeGame {
         SnakeGame {
             width,
             height,
@@ -34,6 +36,7 @@ impl SnakeGame {
             next_direction: Direction::Left,
             food: (2.min(width - 1), height / 2),
             finished: false,
+            _timer: timer,
         }
     }
 
@@ -108,16 +111,5 @@ impl SnakeGame {
         };
 
         self.food = free_position[random_range(0, free_position.len())];
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use crate::snake::*;
-
-    #[test]
-    fn test_snake_game() {
-        let snake = SnakeGame::new(5, 5);
-        println!("{:?}", snake);
     }
 }

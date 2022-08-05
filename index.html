@@ -1,9 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
     <title>Snake</title>
     <style>
       html {
@@ -11,8 +9,13 @@
         text-align: center;
       }
 
-      #root {
+      .board {
         border: 1px solid grey;
+        display: inline-grid;
+      }
+
+      .game:focus {
+        border: 1px solid lightblue;
       }
 
       .field {
@@ -24,13 +27,4 @@
       }
     </style>
   </head>
-  <body>
-    <div id="root"></div>
-
-    <script type="module">
-      import init from './pkg/snake.js';
-
-      await init();
-    </script>
-  </body>
 </html>
