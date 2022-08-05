@@ -87,10 +87,6 @@ impl SnakeGame {
         }
     }
 
-    pub fn head(&self) -> Pos {
-        *self.snake.get(0).unwrap()
-    }
-
     fn is_valid(&self, (x, y): Pos) -> bool {
         x < self.width || y < self.height
     }

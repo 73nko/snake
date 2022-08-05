@@ -1,95 +1,13 @@
+mod board;
 mod random;
 mod snake;
+mod square;
 
-use gloo::{
-    console::{self},
-    timers::callback::Interval,
-};
+use gloo::timers::callback::Interval;
 use snake::{Direction, SnakeGame};
-use web_sys::HtmlDivElement;
-use yew::{html, Callback, Component, Context, Html, KeyboardEvent, NodeRef, Properties};
+use yew::{html, Component, Context, Html, KeyboardEvent};
 
-struct Board {
-    node: NodeRef,
-}
-
-#[derive(Properties, PartialEq)]
-pub struct BoardProps {
-    squares: Vec<String>,
-    height: usize,
-    width: usize,
-    handle_key_press: Callback<KeyboardEvent>,
-}
-
-impl Component for Board {
-    type Message = String;
-    type Properties = BoardProps;
-
-    fn create(_ctx: &Context<Self>) -> Self {
-        Self {
-            node: NodeRef::default(),
-        }
-    }
-
-    fn rendered(&mut self, _ctx: &Context<Self>, first_render: bool) {
-        if first_render {
-            if let Some(div) = self.node.cast::<HtmlDivElement>() {
-                div.focus();
-            } else {
-                console::error!("No div element");
-            }
-        }
-    }
-
-    fn view(&self, ctx: &Context<Self>) -> Html {
-        let positions = ctx.props().squares.clone();
-        let height = ctx.props().height;
-        let width = ctx.props().width;
-        let style = format!(
-            "grid-template: repeat({}, auto) / repeat({}, auto)",
-            height, width
-        );
-        html! {
-            <div
-                tabindex="0"
-                class="board"
-                style={style}
-                ref={self.node.clone()}
-                onkeydown={ctx.props().handle_key_press.clone()}
-            >
-            { positions.iter().map(move |pos| {
-                html!{<Square square={pos.clone()} />}
-            }).collect::<Html>() }
-            </div>
-        }
-    }
-}
-
-struct Square;
-
-#[derive(Properties, PartialEq)]
-pub struct SquareProps {
-    square: String,
-}
-
-impl Component for Square {
-    type Message = String;
-    type Properties = SquareProps;
-
-    fn create(_ctx: &Context<Self>) -> Self {
-        Self
-    }
-
-    fn view(&self, ctx: &Context<Self>) -> Html {
-        let square = ctx.props().square.clone();
-
-        html! {
-            <div class="field">
-                { square }
-            </div>
-        }
-    }
-}
+use board::Board;
 
 pub enum Msg {
     Move(Direction),
