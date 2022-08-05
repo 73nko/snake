@@ -2,8 +2,8 @@ mod random;
 mod snake;
 
 use gloo::{
-    console::{self, Timer},
-    timers::callback::{Interval, Timeout},
+    console::{self},
+    timers::callback::Interval,
 };
 use snake::{Direction, SnakeGame};
 use web_sys::HtmlDivElement;
@@ -122,7 +122,7 @@ impl Component for SnakeGame {
         let food = self.food;
         let snake = self.snake.clone();
 
-        let mut positions: Vec<String> = vec![];
+        let mut squares: Vec<String> = vec![];
 
         let handle_key_press =
             ctx.link()
@@ -146,14 +146,14 @@ impl Component for SnakeGame {
                 } else {
                     " "
                 };
-                positions.push(square.to_string());
+                squares.push(square.to_string());
             }
         }
 
         html! {
             <div>
                 <h2>{ "Snake" }</h2>
-                <Board squares={positions} {height} {width} handle_key_press={handle_key_press} />
+                <Board {squares} {height} {width} {handle_key_press} />
             </div>
         }
     }
