@@ -42,15 +42,15 @@ impl Component for SnakeGame {
 
         let mut squares: Vec<String> = vec![];
 
-        let handle_key_press =
-            ctx.link()
-                .batch_callback(|evt: KeyboardEvent| match &evt.key()[..] {
-                    "ArrowUp" => Some(Msg::Move(Direction::Up)),
-                    "ArrowRight" => Some(Msg::Move(Direction::Right)),
-                    "ArrowDown" => Some(Msg::Move(Direction::Down)),
-                    "ArrowLeft" => Some(Msg::Move(Direction::Left)),
-                    _ => None,
-                });
+        let handle_key_press = ctx
+            .link()
+            .batch_callback(|evt: KeyboardEvent| match &*evt.key() {
+                "ArrowUp" => Some(Msg::Move(Direction::Up)),
+                "ArrowRight" => Some(Msg::Move(Direction::Right)),
+                "ArrowDown" => Some(Msg::Move(Direction::Down)),
+                "ArrowLeft" => Some(Msg::Move(Direction::Left)),
+                _ => None,
+            });
 
         for y in 0..height {
             for x in 0..width {
@@ -68,11 +68,20 @@ impl Component for SnakeGame {
             }
         }
 
-        html! {
-            <div>
-                <h2>{ "Snake" }</h2>
-                <Board {squares} {height} {width} {handle_key_press} />
-            </div>
+        if self.finished {
+            html! {
+                <div>
+                    <h2>{ "Snake" }</h2>
+                    <h3>{ "End Game! " }</h3>
+                </div>
+            }
+        } else {
+            html! {
+                <div>
+                    <h2>{ "Snake" }</h2>
+                    <Board {squares} {height} {width} {handle_key_press} />
+                </div>
+            }
         }
     }
 }

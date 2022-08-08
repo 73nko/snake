@@ -88,7 +88,7 @@ impl SnakeGame {
     }
 
     fn is_valid(&self, (x, y): Pos) -> bool {
-        x < self.width || y < self.height
+        x < self.width || self.width == 0 || y < self.height || self.height == 0
     }
 
     fn is_touching_snake(&self, pos: &Pos) -> bool {
